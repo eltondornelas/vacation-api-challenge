@@ -5,13 +5,13 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.esd.vacationapi.domain.Endereco;
 import com.esd.vacationapi.domain.Equipe;
 import com.esd.vacationapi.domain.Funcionario;
 import com.esd.vacationapi.dto.FuncionarioNewDTO;
-import com.esd.vacationapi.repositories.EquipeRepository;
 import com.esd.vacationapi.repositories.FuncionarioRepository;
 import com.esd.vacationapi.services.exceptions.DataIntegrityException;
 import com.esd.vacationapi.services.exceptions.ObjectNotFoundException;
@@ -20,6 +20,9 @@ import com.esd.vacationapi.services.exceptions.VacationException;
 @Service
 public class FuncionarioService {
 
+	@Autowired
+	private BCryptPasswordEncoder pe;  // password enconder
+	
 	@Autowired 
 	private FuncionarioRepository funcionarioRepository;
 	
@@ -115,7 +118,7 @@ public class FuncionarioService {
 		
 		Endereco end = new Endereco(null, objDto.getRua(), objDto.getNumero(), objDto.getComplemento(), objDto.getBairro(), objDto.getCidade(), objDto.getEstado());
 		
-		Funcionario func = new Funcionario(null, objDto.getNome(), objDto.getDataNascimento(), objDto.getDataContratacao(), end, eq);	
+		Funcionario func = new Funcionario(null, objDto.getNome(), objDto.getDataNascimento(), objDto.getDataContratacao(), end, eq, objDto.getEmail(), pe.encode(objDto.getSenha()));	
 		
 		end.setFuncionario(func);
 		

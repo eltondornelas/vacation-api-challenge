@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -55,6 +56,7 @@ public class FuncionarioResource {
 			
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody FuncionarioNewDTO objDto) {
 		/* Inserindo um novo Funcionário no banco de dados com o POST
@@ -73,15 +75,18 @@ public class FuncionarioResource {
 		
 		/*
 		 * Exemplo json: 
-		 * "nome" : "Everton Dornelas",
-		 * "dataNascimento" : "03/12/1984",
-		 * "dataContratacao" : "17/02/2012",
-		 * "rua" : "Rua de Olinda",
-		 * "numero" : "321",
-		 * "complemento" : "Torre C APT 701",
-		 * "bairro" : "Rio Doce",
-		 * "cidade" : "Olinda",
-		 * "estado" : "PE"
+		  "nome" : "Everton Dornelas",
+		  "dataNascimento" : "03/12/1984",
+		  "dataContratacao" : "17/02/2012",
+		  "rua" : "Rua de Olinda",
+		  "numero" : "321",
+		  "complemento" : "Torre C APT 701",
+		  "bairro" : "Rio Doce",
+		  "cidade" : "Olinda",
+		  "estado" : "PE",
+		  "equope" : "Bucha de Canhão",
+		  "email" : "everton@gmail.com",
+		  "senha" : "123"
 		 * */
 		
 		obj = funcionarioService.insert(obj);  // operação save retorna o objeto
@@ -115,7 +120,7 @@ public class FuncionarioResource {
 		 * */
 	}
 	
-	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> update(@Valid @RequestBody Funcionario obj, @PathVariable Integer id) {
 		/*
@@ -131,7 +136,7 @@ public class FuncionarioResource {
 		
 	}
 	
-	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
 			
@@ -140,6 +145,7 @@ public class FuncionarioResource {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<FuncionarioDTO>> findAll() {
 		/* 

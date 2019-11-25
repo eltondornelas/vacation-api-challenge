@@ -21,6 +21,9 @@ public class FuncionarioNewDTO {
 	private String cidade;
 	private String estado;
 	
+	private String email;
+	private String senha;
+	
 	private String equipe;
 	
 	public FuncionarioNewDTO() {
@@ -105,6 +108,22 @@ public class FuncionarioNewDTO {
 
 	public void setEquipe(String equipe) {
 		this.equipe = equipe;
+	}
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 	

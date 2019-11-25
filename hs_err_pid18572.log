@@ -1,0 +1,48 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x00007ff9c51c7a29, pid=18572, tid=20844
+#
+# JRE version: Java(TM) SE Runtime Environment (11.0.4+10) (build 11.0.4+10-LTS)
+# Java VM: Java HotSpot(TM) 64-Bit Server VM (11.0.4+10-LTS, mixed mode, tiered, compressed oops, g1 gc, windows-amd64)
+# Problematic frame:
+# V  [jvm.dll+0x6c7a29]
+#
+# No core dump will be written. Minidumps are not enabled by default on client versions of Windows
+#
+# If you would like to submit a bug report, please visit:
+#   http://bugreport.java.com/bugreport/crash.jsp
+#
+
+---------------  S U M M A R Y ------------
+
+Command Line: -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=57574 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=localhost -Dspring.jmx.enabled=true -Dspring.application.admin.enabled=true -Xverify:none -XX:TieredStopAtLevel=1 -Dspring.boot.project.name=vacationapi -Dfile.encoding=UTF-8 com.esd.vacationapi.VacationapiApplication --spring.output.ansi.enabled=always
+
+Host: Intel(R) Core(TM) i7-8750H CPU @ 2.20GHz, 12 cores, 15G,  Windows 10 , 64 bit Build 18362 (10.0.18362.329)
+Time: Mon Nov 25 02:32:40 2019 Hora oficial do Brasil elapsed time: 1 seconds (0d 0h 0m 1s)
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x000001be017d2800):  WatcherThread [stack: 0x0000003911d00000,0x0000003911e00000] [id=20844]
+
+Stack: [0x0000003911d00000,0x0000003911e00000],  sp=0x0000003911dff980,  free space=1022k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+V  [jvm.dll+0x6c7a29]
+V  [jvm.dll+0x71321d]
+V  [jvm.dll+0x738bd9]
+V  [jvm.dll+0x634c82]
+C  [ucrtbase.dll+0x20e72]
+C  [KERNEL32.DLL+0x17bd4]
+C  [ntdll.dll+0x6ced1]
+
+
+siginfo: EXCEPTION_ACCESS_VIOLATION (0xc0000005), reading address 0x0000000c0000000b
+
+
+Register to memory mapping:
+
+RIP=0x00007ff9c51c7a29 jvm.dll
+RAX=0x000001be017bc9e0 points into unknown readable memory: 0b 00 00 00 0c 00 00 00
+RBX=0x0 is NULL
+RCX=0x0000000c0000000b is an unknown value
+RDX=

@@ -2,9 +2,16 @@ package com.esd.vacationapi.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,6 +22,7 @@ import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
 
+import com.esd.vacationapi.domain.enums.Perfil;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -37,7 +45,13 @@ public class Funcionario implements Serializable {
 	private Date dataNascimento;
 	
 	@JsonFormat(pattern = "dd/MM/yyyy")
-	private Date dataContratacao;	
+	private Date dataContratacao;
+	
+	@Column(unique=true)  // dessa forma garante que não terá repeticão no banco de dados
+	private String email; 
+	
+	@JsonIgnore  // para que não retorne a senha quando puxar o json
+	private String senha;
 	
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "funcionario")  // é necessário para não ocorrer entidade transiente quando salvar funcionario e o endereco  
 	private Endereco endereco;	
@@ -50,14 +64,17 @@ public class Funcionario implements Serializable {
 	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "funcionario")
 	private Ferias ferias;
-
+	
+	@ElementCollection(fetch=FetchType.EAGER)
+	@CollectionTable(name="PERFIS") //nome da tabela será PERFIS
+	private Set<Integer> perfis = new HashSet<>();
 	
 	public Funcionario() {
-		
+		addPerfil(Perfil.FUNCIONARIO);
 	}
 
 	public Funcionario(Integer matricula, String nome, Date dataNascimento, Date dataContratacao,
-			Endereco endereco, Equipe equipe) {
+			Endereco endereco, Equipe equipe, String email, String senha) {
 		super();
 		this.matricula = matricula;
 		this.nome = nome;
@@ -65,6 +82,9 @@ public class Funcionario implements Serializable {
 		this.dataContratacao = dataContratacao;		
 		this.endereco = endereco;
 		this.equipe = equipe;
+		this.email = email;
+		this.senha = senha;
+		addPerfil(Perfil.FUNCIONARIO);
 	}
 
 	public Integer getMatricula() {
@@ -122,6 +142,30 @@ public class Funcionario implements Serializable {
 	public void setFerias(Ferias ferias) {
 		this.ferias = ferias;
 	}
+		
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}	
+	
+	public Set<Perfil> getPerfis() {
+		return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
+	}
+	
+	public void addPerfil(Perfil perfil) {
+		perfis.add(perfil.getCod());
+	}
 
 	//hash e equals apenas pelo id
 	@Override
@@ -147,7 +191,7 @@ public class Funcionario implements Serializable {
 		} else if (!matricula.equals(matricula))
 			return false;
 		return true;
-	}
+	}	
 	
 	
 }

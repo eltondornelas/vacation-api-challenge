@@ -9,6 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.amazonaws.services.licensemanager.model.AuthorizationException;
 import com.esd.vacationapi.services.exceptions.DataIntegrityException;
 import com.esd.vacationapi.services.exceptions.ObjectNotFoundException;
 import com.esd.vacationapi.services.exceptions.VacationException;
@@ -49,5 +50,11 @@ public class ResourceExceptionHandler {
 				
 		StandardError err = new StandardError(System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value(), "Erro de validação", e.getMessage(), request.getRequestURI());				
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);		
+	}
+	
+	@ExceptionHandler(AuthorizationException.class)
+	public ResponseEntity<StandardError> authorization(AuthorizationException e, HttpServletRequest request) {
+		StandardError err = new StandardError(System.currentTimeMillis(), HttpStatus.FORBIDDEN.value(), "Acesso negado", e.getMessage(), request.getRequestURI());
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
 	}
 }

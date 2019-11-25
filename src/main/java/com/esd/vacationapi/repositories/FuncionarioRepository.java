@@ -13,5 +13,6 @@ public interface FuncionarioRepository extends JpaRepository<Funcionario, Intege
 	 * 2º Parâmetro => Tipo do atributo identificador desse objeto
 	 * */
 	
-	
+	Funcionario findByEmail(String email);
+	// dessa forma o Spring entende que quer buscar por e-mail.	
 }

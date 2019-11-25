@@ -3,6 +3,7 @@ package com.esd.vacationapi.dto;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
@@ -20,12 +21,12 @@ public class FuncionarioDTO implements Serializable {
 	@Length(min = 5, max = 80, message = "O tamanho deve ser entre 5 e 80 caracteres")
 	private String nome;
 	/* tags de validações */
-	
-	@JsonFormat(pattern = "dd/MM/yyyy")
-	private Date dataNascimento;
-	
+
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private Date dataContratacao;
+	
+	@Email(message = "Email inválido")
+	private String email;
 	
 	public FuncionarioDTO() {
 		
@@ -34,7 +35,7 @@ public class FuncionarioDTO implements Serializable {
 	public FuncionarioDTO(Funcionario obj) {
 		matricula = obj.getMatricula();
 		nome = obj.getNome();
-		dataNascimento = obj.getDataNascimento();
+		email = obj.getEmail();
 		dataContratacao = obj.getDataContratacao();		
 	}
 
@@ -52,14 +53,6 @@ public class FuncionarioDTO implements Serializable {
 
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-
-	public Date getDataNascimento() {
-		return dataNascimento;
-	}
-
-	public void setDataNascimento(Date dataNascimento) {
-		this.dataNascimento = dataNascimento;
 	}
 
 	public Date getDataContratacao() {

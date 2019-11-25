@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,8 +41,8 @@ public class FeriasResource {
 		 * inserindo pelo postman:
 		 * 
 		 * "matricula" : "1",
-		 *  "inicioFerias" : "15/01/2020",
-		 *  "finalFerias" : "15/02/2020"
+		  "inicioFerias" : "15/01/2020",
+		  "finalFerias" : "15/02/2020"
 		 * */
 		
 		Ferias obj = feriasService.fromDTO(objDto);
@@ -77,6 +78,7 @@ public class FeriasResource {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<Ferias>> findAll() {
 	
