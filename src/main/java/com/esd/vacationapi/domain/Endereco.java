@@ -8,6 +8,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Endereco implements Serializable {
 
@@ -28,6 +30,7 @@ public class Endereco implements Serializable {
 	private String cidade;
 	private String estado;
 	
+	@JsonIgnore
 	@OneToOne
 	@JoinColumn(name = "funcionario_id")
 	@MapsId  // garante que o this.id é o mesmo id do funcionario   
@@ -38,7 +41,7 @@ public class Endereco implements Serializable {
 	}
 
 	public Endereco(Integer id, String rua, String numero, String complemento, String bairro, String cidade,
-			String estado, Funcionario funcionario) {
+			String estado) {
 		super();
 		this.id = id;
 		this.rua = rua;
@@ -46,8 +49,7 @@ public class Endereco implements Serializable {
 		this.complemento = complemento;
 		this.bairro = bairro;
 		this.cidade = cidade;
-		this.estado = estado;
-		//this.funcionario = funcionario;
+		this.estado = estado;		
 	}
 
 	public Integer getId() {

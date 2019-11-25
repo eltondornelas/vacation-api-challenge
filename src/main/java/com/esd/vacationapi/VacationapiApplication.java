@@ -47,14 +47,14 @@ public class VacationapiApplication implements CommandLineRunner {
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");		
 		
-		Endereco end1 = new Endereco(null,  "Rua João Francisco Lisboa", "121", "BL 12 APT 101", "Várzea", "Recife", "PE", null);
-		Endereco end2 = new Endereco(null, "Rua Alcino Ferreira da Paz", "200", "APT 302", "Pau Amarelo", "Paulista", "PE", null);
-		Endereco end3 = new Endereco(null, "Rua da Unit", "101", "APT 101", "Boa Vista", "Recife", "PE", null);
+		Endereco end1 = new Endereco(null, "Rua João Francisco Lisboa", "121", "BL 12 APT 101", "Várzea", "Recife", "PE");
+		Endereco end2 = new Endereco(null, "Rua Alcino Ferreira da Paz", "200", "APT 302", "Pau Amarelo", "Paulista", "PE");
+		Endereco end3 = new Endereco(null, "Rua da Unit", "101", "APT 101", "Boa Vista", "Recife", "PE");
 		
 		Equipe eq1 = new Equipe(null, "Bucha de Canhão");
 		Equipe eq2 = new Equipe(null, "Só sei que Nada Sei");
 		
-		Funcionario func1 = new Funcionario(null, "Elton Dornelas", sdf.parse("01/11/1990"), sdf.parse("07/12/2018"), end1, eq1);
+		Funcionario func1 = new Funcionario(null, "Elton Dornelas", sdf.parse("01/11/1990"), sdf.parse("01/11/2019"), end1, eq1);
 		Funcionario func2 = new Funcionario(null, "Amanda Santos", sdf.parse("14/08/1995"), sdf.parse("06/12/2016"), end2, eq2);
 		Funcionario func3 = new Funcionario(null, "Ciço Perturbador", sdf.parse("15/06/1989"), sdf.parse("13/10/2015"), end3, eq1);
 		

@@ -9,6 +9,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
 
 @Entity
 public class Equipe implements Serializable {
@@ -19,11 +22,12 @@ public class Equipe implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
+	@NotEmpty(message="Preenchimento obrigatório")
+	@Length(min = 5, max = 80, message = "O tamanho deve ser entre 5 e 80 caracteres")
 	private String nome;
 	
 	@OneToMany(mappedBy = "equipe")  // qual atributo do outro lado que foi mapeado pelo ManyToOne = equipe  
 	private List<Funcionario> funcionarios = new ArrayList<>();
-	
 	
 	public Equipe() {
 		

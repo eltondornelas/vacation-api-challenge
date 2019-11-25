@@ -11,22 +11,26 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Funcionario implements Serializable {
 	// sem ter colocado a dependência do JPA ele não enxerga nem @Entity nem o @Id
 	
-	private static final long serialVersionUID = 1L;
-	
-	private static int cod = 10;
+	private static final long serialVersionUID = 1L;	
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)  
-	private Integer id;
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Integer matricula;
 	// @GeneratedValue(strategy=GenerationType.IDENTITY): geração de chave primária
 	
+	@NotEmpty(message="Preenchimento obrigatório")
+	@Length(min = 5, max = 80, message = "O tamanho deve ser entre 5 e 80 caracteres")
 	private String nome;
 	
 	@JsonFormat(pattern = "dd/MM/yyyy")
@@ -34,18 +38,16 @@ public class Funcionario implements Serializable {
 	
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private Date dataContratacao;	
-		
-	// @GeneratedValue(strategy=GenerationType.AUTO)
-	private String matricula;  // gerada automaticamente pelo sistema
-	
 	
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "funcionario")  // é necessário para não ocorrer entidade transiente quando salvar funcionario e o endereco  
 	private Endereco endereco;	
 	
+	@JsonIgnore  // evitando uma relação cíclica
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "equipe_id")  // criando uma nova coluna com referência ao id da equipe 
+	@JoinColumn(name = "equipe_id")  // criando uma nova coluna com referência ao id da equipe; Chave Estrangeira 
 	private Equipe equipe;	
 	
+	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "funcionario")
 	private Ferias ferias;
 
@@ -54,26 +56,24 @@ public class Funcionario implements Serializable {
 		
 	}
 
-	public Funcionario(Integer id, String nome, Date dataNascimento, Date dataContratacao,
+	public Funcionario(Integer matricula, String nome, Date dataNascimento, Date dataContratacao,
 			Endereco endereco, Equipe equipe) {
 		super();
-		this.id = id;
+		this.matricula = matricula;
 		this.nome = nome;
 		this.dataNascimento = dataNascimento;
-		this.dataContratacao = dataContratacao;
-		this.matricula = nome.substring(0, 3).toLowerCase() + cod;
+		this.dataContratacao = dataContratacao;		
 		this.endereco = endereco;
 		this.equipe = equipe;
-		cod++;
 	}
 
-	public Integer getId() {
-		return id;
+	public Integer getMatricula() {
+		return matricula;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+	public void setMatricula(Integer matricula) {
+		this.matricula = matricula;		
+	}	
 	
 	public String getNome() {
 		return nome;
@@ -98,15 +98,6 @@ public class Funcionario implements Serializable {
 	public void setDataContratacao(Date dataContratacao) {
 		this.dataContratacao = dataContratacao;
 	}
-
-	public String getMatricula() {
-		return matricula;
-	}
-
-	public void setMatricula(String matricula) {
-		this.matricula = matricula;
-		cod++;
-	}	
 
 	public Endereco getEndereco() {
 		return endereco;
@@ -137,7 +128,7 @@ public class Funcionario implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((matricula == null) ? 0 : matricula.hashCode());
 		return result;
 	}
 
@@ -150,10 +141,10 @@ public class Funcionario implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Funcionario other = (Funcionario) obj;
-		if (id == null) {
-			if (other.id != null)
+		if (matricula == null) {
+			if (other.matricula != null)
 				return false;
-		} else if (!id.equals(other.id))
+		} else if (!matricula.equals(matricula))
 			return false;
 		return true;
 	}

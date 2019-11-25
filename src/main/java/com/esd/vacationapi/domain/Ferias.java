@@ -24,9 +24,8 @@ public class Ferias implements Serializable {
 	@OneToOne
 	@JoinColumn(name = "funcionario_id")	
 	private Funcionario funcionario;
-	
-	//private String periodoFerias;
-	@JsonFormat(pattern = "dd/MM/yyyy")
+
+	@JsonFormat(pattern = "dd/MM/yyyy")  // mascara padrão
 	private Date inicioFerias;
 	
 	@JsonFormat(pattern = "dd/MM/yyyy")
