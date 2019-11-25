@@ -1,12 +1,16 @@
 package com.esd.vacationapi.services;
 
+import java.awt.image.BufferedImage;
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.esd.vacationapi.domain.Endereco;
 import com.esd.vacationapi.domain.Equipe;
@@ -31,6 +35,15 @@ public class FuncionarioService {
 	
 	@Autowired
 	private EquipeService equipeService;
+	
+	@Autowired
+	private S3Service s3Service;
+	
+	@Autowired
+	private ImageService imageService;	
+	
+	@Value("${img.prefix.client.profile}")
+	private String prefix;
 	
 	
 	/*
@@ -144,6 +157,43 @@ public class FuncionarioService {
 		 *  */
 		
 		return func; 
+	}
+	
+	public URI uploadProfilePicture(MultipartFile multipartFile) {		
+				
+		UserSS user = UserService.authenticated();
+		if (user == null) {
+			throw new AuthorizationException("Acesso negado");
+			// não tem ninguém logado, por isso nega
+		}
+		
+		//link exemplo: https://vacation-api.s3.sa-east-1.amazonaws.com/func8.jpg
+		
+		//URI uri = s3Service.uploadFile(multipartFile);
+		
+		Funcionario func = find(user.getId());
+		//func.setImageUrl(uri.toString());
+		//funcionarioRepository.save(func);
+		
+		//return uri;
+		
+		
+		BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
+		
+		//jpgImage = imageService.cropSquare(jpgImage);
+		//jpgImage = imageService.resize(jpgImage, size);
+
+		String fileName = prefix + user.getId() + ".jpg";
+		// montando o nomne personalizado. esse prefix é o que colocamos la no
+		// application properties: "func"
+		// a partir de agora ficará salvo na nuvem desta forma e gerará a url com esse
+		// nome no final		
+		
+		func.setImageUrl(s3Service.uploadFile(imageService.getInputStream(jpgImage, "jpg"), fileName, "image").toString());
+		update(func); // salvando no bd a url além de salvar na nuvem abaixo.
+		
+		return s3Service.uploadFile(imageService.getInputStream(jpgImage, "jpg"), fileName, "image");		
+		
 	}
 	
 }

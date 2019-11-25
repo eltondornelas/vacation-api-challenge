@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.esd.vacationapi.domain.Funcionario;
@@ -172,5 +174,14 @@ public class FuncionarioResource {
 		return ResponseEntity.ok().body(listDto);
 		/* retornando uma lista de funcionários */
 		
+	}
+	
+	@RequestMapping(value="/picture", method=RequestMethod.POST)
+	public ResponseEntity<Void> uploadProfilePicture(@RequestParam(name="file") MultipartFile file) {
+		URI uri = funcionarioService.uploadProfilePicture(file);
+		//esta fazendo um upload de uma imagem que retorna uma URI
+		return ResponseEntity.created(uri).build();
+		//com isso vai retornar a resposta http 201 criado e cria o cabeçalho
+		// lembrando de, no postman em headers, remover o content-type = application/json
 	}
 }

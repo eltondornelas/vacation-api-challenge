@@ -86,7 +86,7 @@ public class FeriasService {
 		Long inicioFerias = start.getTimeInMillis();		
 		Integer conversao = 24*60*60*1000;
 		
-		if( (finalFerias - inicioFerias) / conversao < 15 || (finalFerias - inicioFerias) / conversao > 30) {
+		if( (finalFerias - inicioFerias) / conversao < 15 || (finalFerias - inicioFerias) / conversao > 31) {  // as vezes essa conversão come 1 dia
 			throw new VacationException("Quantidade de tempo inválida");
 		}		
 		

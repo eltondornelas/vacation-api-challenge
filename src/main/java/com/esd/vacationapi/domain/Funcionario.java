@@ -69,6 +69,8 @@ public class Funcionario implements Serializable {
 	@CollectionTable(name="PERFIS") //nome da tabela será PERFIS
 	private Set<Integer> perfis = new HashSet<>();
 	
+	private String imageUrl;
+	
 	public Funcionario() {
 		addPerfil(Perfil.FUNCIONARIO);
 	}
@@ -157,6 +159,14 @@ public class Funcionario implements Serializable {
 
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+	
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}	
 	
 	public Set<Perfil> getPerfis() {
@@ -191,7 +201,8 @@ public class Funcionario implements Serializable {
 		} else if (!matricula.equals(matricula))
 			return false;
 		return true;
-	}	
+	}
+
 	
 	
 }
