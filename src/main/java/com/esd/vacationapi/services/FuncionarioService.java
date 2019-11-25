@@ -11,8 +11,11 @@ import org.springframework.stereotype.Service;
 import com.esd.vacationapi.domain.Endereco;
 import com.esd.vacationapi.domain.Equipe;
 import com.esd.vacationapi.domain.Funcionario;
+import com.esd.vacationapi.domain.enums.Perfil;
 import com.esd.vacationapi.dto.FuncionarioNewDTO;
 import com.esd.vacationapi.repositories.FuncionarioRepository;
+import com.esd.vacationapi.security.UserSS;
+import com.esd.vacationapi.services.exceptions.AuthorizationException;
 import com.esd.vacationapi.services.exceptions.DataIntegrityException;
 import com.esd.vacationapi.services.exceptions.ObjectNotFoundException;
 import com.esd.vacationapi.services.exceptions.VacationException;
@@ -39,6 +42,16 @@ public class FuncionarioService {
 
 	public Funcionario find(Integer matricula) {
 		//precisamos acessar dados, consequentemente temos que acessar o repository.
+		
+		UserSS user = UserService.authenticated();
+		if (user == null || !user.hasRole(Perfil.ADMIN) && !matricula.equals(user.getId())) {
+			throw new AuthorizationException("Acesso negado");
+		/* 
+		 * essa condição verifica se esse funcionário é o ADMIN, caso negativo
+		 * verifica se ele é o mesmo do id solicitado e caso negativo, ele receberá
+		 * uma mensagem com acesso negado.
+		 *  */
+		}
 		
 		Optional<Funcionario> obj = funcionarioRepository.findById(matricula);
 		/*
