@@ -59,7 +59,7 @@ public class DBService {
 		
 		Funcionario func1 = new Funcionario(null, "Elton Dornelas", sdf.parse("01/11/1990"), sdf.parse("01/11/2019"), end1, eq1, "elton@gmail.com", pe.encode("123"));
 		func1.addPerfil(Perfil.ADMIN);
-		Funcionario func2 = new Funcionario(null, "Amanda Santos", sdf.parse("14/08/1995"), sdf.parse("06/12/2016"), end2, eq3, "amanda@gmail.com",  pe.encode("456"));
+		Funcionario func2 = new Funcionario(null, "Amanda Santos", sdf.parse("14/08/1995"), sdf.parse("06/12/2016"), end2, eq2, "amanda@gmail.com",  pe.encode("456"));
 		Funcionario func3 = new Funcionario(null, "Cicero Perturbador", sdf.parse("21/03/1993"), sdf.parse("27/12/2000"), end3, eq1, "cicinho@gmail.com",  pe.encode("789"));
 		Funcionario func4 = new Funcionario(null, "Everton Dornelas", sdf.parse("06/08/1988"), sdf.parse("23/06/2010"), end7, eq2, "everton@gmail.com", pe.encode("987"));
 		Funcionario func5 = new Funcionario(null, "Thiago Jacinto", sdf.parse("24/06/1997"), sdf.parse("05/09/2002"), end8, eq1, "thiago@gmail.com", pe.encode("654"));

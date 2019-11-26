@@ -59,7 +59,7 @@ public class Funcionario implements Serializable {
 	@JsonIgnore  // evitando uma relação cíclica
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "equipe_id")  // criando uma nova coluna com referência ao id da equipe; Chave Estrangeira 
-	private Equipe equipe;	
+	private Equipe equipe;
 	
 	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "funcionario")

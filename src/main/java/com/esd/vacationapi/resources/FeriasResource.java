@@ -48,6 +48,7 @@ public class FeriasResource {
 		Ferias obj = feriasService.fromDTO(objDto);
 		
 		feriasService.aprovaSolicitacaoFerias(obj);
+		// se não for aprovado, vai ser lançado exceção lá do service.
 		
 		obj = feriasService.insert(obj);
 		
