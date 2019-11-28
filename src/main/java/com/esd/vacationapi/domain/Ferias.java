@@ -75,7 +75,8 @@ public class Ferias implements Serializable {
 	public void setFinalFerias(Date finalFerias) {
 		this.finalFerias = finalFerias;
 	}
-
+	
+		
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -104,33 +105,35 @@ public class Ferias implements Serializable {
 	@Override
 	public String toString() {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy");
-		
-		StringBuilder builder = new StringBuilder();
-		builder.append("nome : ");
-		builder.append(funcionario.getNome());
-		builder.append("matricula : ");
-		builder.append(funcionario.getMatricula());
-		builder.append("email : ");
-		builder.append(funcionario.getEmail());
-		builder.append("inicioFerias : ");
-		builder.append(sdf.format(inicioFerias));
-		builder.append("finalFerias : ");
-		builder.append(sdf.format(finalFerias));
-		builder.append("equipe : ");
-		builder.append(funcionario.getEquipe().getNome());
-		
-		return builder.toString();
 
+//		StringBuilder builder = new StringBuilder();
+//		builder.append("nome : ");
+//		builder.append(funcionario.getNome());
+//		builder.append("matricula : ");
+//		builder.append(funcionario.getMatricula());
+//		builder.append("email : ");
+//		builder.append(funcionario.getEmail());
+//		builder.append("inicioFerias : ");
+//		builder.append(sdf.format(inicioFerias));
+//		builder.append("finalFerias : ");
+//		builder.append(sdf.format(finalFerias));
+//		builder.append("equipe : ");
+//		builder.append(funcionario.getEquipe().getNome());
+//		
+//		return builder.toString();
+	
 		
-		/*
 		return "nome : " + funcionario.getNome()
 				+ "\nmatricula : " + funcionario.getMatricula()
 				+ "\nemail : " + funcionario.getEmail()
 				+ "\ninicioFerias : " + sdf.format(inicioFerias)
 				+ "\nfinalFerias : " + sdf.format(finalFerias)
 				+ "\nequipe : " + funcionario.getEquipe().getNome();
-				*/
+		
 	}
+
+	
+	
 	
 	
 

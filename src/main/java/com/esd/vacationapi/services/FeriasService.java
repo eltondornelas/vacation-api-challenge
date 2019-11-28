@@ -28,7 +28,7 @@ public class FeriasService {
 	private FuncionarioService funcionarioService;
 	
 	
-	public Ferias find(Integer id) {		
+	public Ferias find(Integer id) {
 		
 		Optional<Ferias> obj = feriasRepository.findById(id);
 		

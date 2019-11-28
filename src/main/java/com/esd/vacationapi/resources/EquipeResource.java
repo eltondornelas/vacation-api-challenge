@@ -71,7 +71,7 @@ public class EquipeResource {
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<Equipe>> findAll() {
 	
-		List<Equipe> list = equipeService.findAll();		 
+		List<Equipe> list = equipeService.findAll();		
 		
 		return ResponseEntity.ok().body(list);
 	

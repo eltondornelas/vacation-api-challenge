@@ -2,8 +2,16 @@ package com.esd.vacationapi.services;
 
 import java.util.Date;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import com.esd.vacationapi.domain.Ferias;
 
@@ -17,6 +25,12 @@ public abstract class AbstractEmailService implements EmailService {
 	
 	@Value("${default.sender}")
 	private String sender;
+	
+	@Autowired
+	private TemplateEngine templateEngine;
+	
+	@Autowired
+	private JavaMailSender javaMailSender;
 	
 	@Override
 	public void sendConfirmationEmail(Ferias obj) {
@@ -35,6 +49,39 @@ public abstract class AbstractEmailService implements EmailService {
 		sm.setText(obj.toString());
 		
 		return sm;
+	}
+	
+	protected String htmlFromTemplateFerias(Ferias obj) {
+		Context context = new Context();  // precisa de um objeto desse tipo para acessar o template
+		context.setVariable("ferias", obj);  // vai utilizar o obj com o apelido ferias
+		return templateEngine.process("email/confirmacaoFerias", context);
+		//é o caminho da subpasta que está em template, por padrão o tymeleaf busca já por /resources/templates
+		
+	}
+	
+	@Override
+	public void sendConfirmationHtmlEmail(Ferias obj) {
+		
+		try {
+			MimeMessage mm = prepareMimeMessageFromFerias(obj);
+			sendHtmlEmail(mm);
+			
+		} catch (MessagingException e) {
+			sendConfirmationEmail(obj);			
+		}
+		
+	}
+
+	protected MimeMessage prepareMimeMessageFromFerias(Ferias obj) throws MessagingException {
+		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+		MimeMessageHelper mmh = new MimeMessageHelper(mimeMessage, true);
+		mmh.setTo(obj.getFuncionario().getEmail());
+		mmh.setFrom(sender);
+		mmh.setSubject("Registro de Férias Concluído");
+		mmh.setSentDate(new Date(System.currentTimeMillis()));
+		mmh.setText(htmlFromTemplateFerias(obj), true);
+		
+		return mimeMessage;
 	}
 	
 }

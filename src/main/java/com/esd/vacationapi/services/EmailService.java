@@ -1,5 +1,7 @@
 package com.esd.vacationapi.services;
 
+import javax.mail.internet.MimeMessage;
+
 import org.springframework.mail.SimpleMailMessage;
 
 import com.esd.vacationapi.domain.Ferias;
@@ -14,5 +16,9 @@ public interface EmailService {
 	
 	void sendConfirmationEmail(Ferias obj);
 	
-	void sendEmail(SimpleMailMessage msg);
+	void sendEmail(SimpleMailMessage msg);  // enviando email plano
+	
+	void sendConfirmationHtmlEmail(Ferias obj);
+	
+	void sendHtmlEmail(MimeMessage msg);  // MimeMessage para enviar um email html
 }

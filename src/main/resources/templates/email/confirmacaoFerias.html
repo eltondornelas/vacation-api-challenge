@@ -1,0 +1,30 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title th:remove="all">Ferias Confirmation</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<div>		
+		<h3>Detalhes do registro:</h3>
+		<table border="1">
+			<tr>
+				<th>Matrícula Funcionário</th>
+				<th>Início das Férias</th>
+				<th>Final das Férias</th>
+				<th>Equipe</th>				
+			</tr>
+			
+			<tr>
+				<td th:text="${ferias.funcionario.matricula}"></td>
+				 <td th:text="${#dates.format(ferias.inicioFerias, 'dd/MM/yyyy')}"></td>
+				<td	th:text="${#dates.format(ferias.finalFerias, 'dd/MM/yyyy')}"></td>
+				<td th:text="${ferias.funcionario.equipe.nome}"></td>				
+			</tr> 
+			
+		</table>
+		
+	</div>
+</body>
+</html>

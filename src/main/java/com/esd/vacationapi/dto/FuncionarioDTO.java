@@ -28,6 +28,8 @@ public class FuncionarioDTO implements Serializable {
 	@Email(message = "Email inválido")
 	private String email;
 	
+	private String nomeEquipe;
+	
 	public FuncionarioDTO() {
 		
 	}
@@ -37,6 +39,7 @@ public class FuncionarioDTO implements Serializable {
 		nome = obj.getNome();
 		email = obj.getEmail();
 		dataContratacao = obj.getDataContratacao();		
+		setNomeEquipe(obj.getEquipe().getNome());
 	}
 
 	public Integer getId() {
@@ -69,6 +72,14 @@ public class FuncionarioDTO implements Serializable {
 
 	public void setMatricula(Integer matricula) {
 		this.matricula = matricula;
+	}
+
+	public String getNomeEquipe() {
+		return nomeEquipe;
+	}
+
+	public void setNomeEquipe(String nomeEquipe) {
+		this.nomeEquipe = nomeEquipe;
 	}
 	
 	

@@ -57,17 +57,17 @@ public class DBService {
 		Equipe eq2 = new Equipe(null, "Só sei que Nada Sei");
 		Equipe eq3 = new Equipe(null, "Eu chego lá");
 		
-		Funcionario func1 = new Funcionario(null, "Elton Dornelas", sdf.parse("01/11/1990"), sdf.parse("01/01/2018"), end1, eq1, "elton@gmail.com", pe.encode("123"));
+		Funcionario func1 = new Funcionario(null, "Elton Dornelas", sdf.parse("01/11/1990"), sdf.parse("01/01/2018"), end1, eq1, "eltondornelas@gmail.com", pe.encode("123"));
 		func1.addPerfil(Perfil.ADMIN);
-		Funcionario func2 = new Funcionario(null, "Amanda Santos", sdf.parse("14/08/1995"), sdf.parse("06/12/2017"), end2, eq2, "amanda@gmail.com",  pe.encode("456"));
-		Funcionario func3 = new Funcionario(null, "Cicinho Presidente Sindicato", sdf.parse("21/03/1993"), sdf.parse("27/01/2018"), end3, eq1, "cicinho@gmail.com",  pe.encode("789"));
-		Funcionario func4 = new Funcionario(null, "Everton Dornelas", sdf.parse("06/08/1988"), sdf.parse("30/03/2018"), end7, eq2, "everton@gmail.com", pe.encode("987"));
-		Funcionario func5 = new Funcionario(null, "Thiago Jacinto", sdf.parse("24/06/1997"), sdf.parse("05/05/2018"), end8, eq1, "thiago@gmail.com", pe.encode("654"));
-		Funcionario func6 = new Funcionario(null, "Thiago Albertins", sdf.parse("09/07/1998"), sdf.parse("04/08/2018"), end4, eq1, "thiago.albertins@gmail.com",  pe.encode("321"));
-		Funcionario func7 = new Funcionario(null, "Deyvson da Silva", sdf.parse("08/05/1986"), sdf.parse("29/09/2019"), end10, eq2, "deyvson@gmail.com", pe.encode("111"));
-		Funcionario func8 = new Funcionario(null, "Luana Vilela", sdf.parse("07/11/1984"), sdf.parse("06/01/2019"), end9, eq3, "luana@gmail.com",  pe.encode("222"));
-		Funcionario func9 = new Funcionario(null, "Paulo Alcantara", sdf.parse("16/08/1985"), sdf.parse("14/04/2019"), end5, eq2, "paulo@gmail.com", pe.encode("333"));
-		Funcionario func10 = new Funcionario(null, "Sergio Lins", sdf.parse("16/01/1981"), sdf.parse("17/12/2017"), end6, eq2, "sergio@gmail.com", pe.encode("444"));
+		Funcionario func2 = new Funcionario(null, "Amanda Santos", sdf.parse("14/08/1995"), sdf.parse("06/12/2017"), end2, eq2, "amanda@teste.com",  pe.encode("456"));
+		Funcionario func3 = new Funcionario(null, "Cicinho Presidente Sindicato", sdf.parse("21/03/1993"), sdf.parse("27/01/2018"), end3, eq1, "cicinho@teste.com",  pe.encode("789"));
+		Funcionario func4 = new Funcionario(null, "Everton Dornelas", sdf.parse("06/08/1988"), sdf.parse("30/03/2018"), end7, eq2, "everton@teste.com", pe.encode("987"));
+		Funcionario func5 = new Funcionario(null, "Thiago Jacinto", sdf.parse("24/06/1997"), sdf.parse("05/05/2018"), end8, eq1, "thiago@teste.com", pe.encode("654"));
+		Funcionario func6 = new Funcionario(null, "Thiago Albertins", sdf.parse("09/07/1998"), sdf.parse("04/08/2018"), end4, eq1, "thiago.albertins@teste.com",  pe.encode("321"));
+		Funcionario func7 = new Funcionario(null, "Deyvson da Silva", sdf.parse("08/05/1986"), sdf.parse("29/09/2019"), end10, eq2, "deyvson@teste.com", pe.encode("111"));
+		Funcionario func8 = new Funcionario(null, "Luana Vilela", sdf.parse("07/11/1984"), sdf.parse("06/01/2019"), end9, eq3, "luana@teste.com",  pe.encode("222"));
+		Funcionario func9 = new Funcionario(null, "Paulo Alcantara", sdf.parse("16/08/1985"), sdf.parse("14/04/2019"), end5, eq2, "paulo@teste.com", pe.encode("333"));
+		Funcionario func10 = new Funcionario(null, "Sergio Lins", sdf.parse("16/01/1981"), sdf.parse("17/12/2017"), end6, eq2, "sergio@teste.com", pe.encode("444"));
 		Funcionario func11 = new Funcionario(null, "ADMIN CAST GROUP", sdf.parse("01/01/1970"), sdf.parse("22/11/2019"), null, eq3, "administrador.ferias@castgroup.com.br", pe.encode("123a"));
 		func11.addPerfil(Perfil.ADMIN);
 		
@@ -98,5 +98,6 @@ public class DBService {
 		Ferias fer2 = new Ferias(null, func5, sdf.parse("02/02/2020"), sdf.parse("02/03/2020"));
 		
 		feriasRepository.saveAll(Arrays.asList(fer1, fer2));
+		//feriasRepository.saveAll(Arrays.asList(fer1));
 	}
 }

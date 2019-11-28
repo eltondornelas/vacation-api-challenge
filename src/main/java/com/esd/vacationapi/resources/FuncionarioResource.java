@@ -84,7 +84,7 @@ public class FuncionarioResource {
 		 * Exemplo json: "nome" : "Everton Dornelas", "dataNascimento" : "03/12/1984",
 		 * "dataContratacao" : "17/02/2012", "rua" : "Rua de Olinda", "numero" : "321",
 		 * "complemento" : "Torre C APT 701", "bairro" : "Rio Doce", "cidade" :
-		 * "Olinda", "estado" : "PE", "equope" : "Bucha de Canhão", "email" :
+		 * "Olinda", "estado" : "PE", "equipe" : "Bucha de Canhão", "email" :
 		 * "everton@gmail.com", "senha" : "123"
 		 */
 
@@ -170,6 +170,7 @@ public class FuncionarioResource {
 
 	}
 
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value = "/feriaspendentes/{meses}", method = RequestMethod.GET)
 	public ResponseEntity<List<Funcionario>> findAllMissing(@PathVariable Integer meses) {
 

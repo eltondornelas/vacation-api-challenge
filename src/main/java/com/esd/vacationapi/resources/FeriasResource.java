@@ -1,6 +1,7 @@
 package com.esd.vacationapi.resources;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URI;
 import java.util.List;
 
@@ -37,6 +38,7 @@ public class FeriasResource {
 	@Autowired
 	private EmailService emailService;
 	
+	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Ferias> find(@PathVariable Integer id) {
 		
@@ -68,14 +70,22 @@ public class FeriasResource {
 		
 		try {			
 			
-			qrService.generateQRCodeImage(obj.toString(), 350, 350, QRCodeService.QR_CODE_IMAGE_PATH);  // testando armazenamento e funcionamento do QR Code
+			//qrService.generateQRCodeImage(obj.toString(), 350, 350, QRCodeService.QR_CODE_IMAGE_PATH);  // testando armazenamento e funcionamento do QR Code
+			
 						
-			byte[] qrCode = qrService.getQRCodeImage(obj.toString(), 350, 350);  // recebendo o QR Code em bytes para impressão na response
+			//byte[] qrCode = qrService.getQRCodeImage(obj.toString(), 350, 350);  // recebendo o QR Code em bytes para impressão na response
+			
+			response.setContentType("image/png");
+			OutputStream outputStream = response.getOutputStream();
+			outputStream.write(qrService.getQRCodeImage(obj.toString(), 350, 350));			
+			outputStream.flush();
+			outputStream.close();
 			
 			response.addHeader("Operation Response", "Registro Concluído com Sucesso!");
-			response.addHeader("QRCode", qrCode.toString());
+			//response.addHeader("QRCode", qrService.getQRCodeImage(obj.toString(), 350, 350).toString());
 			
 			emailService.sendConfirmationEmail(obj);  // iria colocar no service, mas deixei em resource para aproveitar o QR Code
+			emailService.sendConfirmationHtmlEmail(obj);  // precisa estar no perfil dev
 			
 		} catch (WriterException | IOException e) {
 			 System.out.println("Could not generate QR Code, WriterException :: " + e.getMessage());
@@ -94,6 +104,7 @@ public class FeriasResource {
 		return ResponseEntity.noContent().build();
 		
 	}
+	
 	
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
