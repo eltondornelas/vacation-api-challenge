@@ -20,7 +20,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.esd.vacationapi.domain.Ferias;
 import com.esd.vacationapi.dto.FeriasNewDTO;
-import com.esd.vacationapi.services.EmailService;
 import com.esd.vacationapi.services.FeriasService;
 import com.esd.vacationapi.services.QRCodeService;
 import com.google.zxing.WriterException;
@@ -35,10 +34,6 @@ public class FeriasResource {
 	@Autowired
 	private QRCodeService qrService;
 	
-	@Autowired
-	private EmailService emailService;
-	
-	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Ferias> find(@PathVariable Integer id) {
 		
@@ -47,6 +42,7 @@ public class FeriasResource {
 		return ResponseEntity.ok().body(obj);
 			
 	}
+	
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody FeriasNewDTO objDto, HttpServletResponse response) {		
@@ -84,8 +80,8 @@ public class FeriasResource {
 			response.addHeader("Operation Response", "Registro Concluído com Sucesso!");
 			//response.addHeader("QRCode", qrService.getQRCodeImage(obj.toString(), 350, 350).toString());
 			
-			emailService.sendConfirmationEmail(obj);  // iria colocar no service, mas deixei em resource para aproveitar o QR Code
-			emailService.sendConfirmationHtmlEmail(obj);  // precisa estar no perfil dev
+			//emailService.sendConfirmationEmail(obj);  // iria colocar no service, mas deixei em resource para aproveitar o QR Code
+			//emailService.sendConfirmationHtmlEmail(obj);  // precisa estar no perfil dev
 			
 		} catch (WriterException | IOException e) {
 			 System.out.println("Could not generate QR Code, WriterException :: " + e.getMessage());
