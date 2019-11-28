@@ -2,6 +2,8 @@ package com.esd.vacationapi.services;
 
 import java.awt.image.BufferedImage;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -109,11 +111,13 @@ public class FuncionarioService {
 		return funcionarioRepository.save(obj);
 	}
 	
-	public void delete(Integer id) {
+	public void delete(Integer matricula) {
 		
-		find(id);
+		find(matricula);  // caso não exista já dispara a exceção
+		
 		try {
-			funcionarioRepository.deleteById(id);
+						
+			funcionarioRepository.deleteById(matricula);
 		
 		}catch(DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possível excluir funcionário que possui equipe!");
@@ -134,6 +138,46 @@ public class FuncionarioService {
 		 * */
 	}
 	
+	public List<Funcionario> findAllMissing(Integer meses) {
+
+		List<Funcionario> listAll = funcionarioRepository.findAll();
+		// procurar buscar do banco de dados os funcionarios sem férias
+		
+		List<Funcionario> listaQuemFaltaCadastrarFerias = new ArrayList<>();
+		
+		for(Funcionario func : listAll)
+			if(func.getFerias() == null) {  // buscando funcionários que não tem férias programadas
+				listaQuemFaltaCadastrarFerias.add(func);
+			}
+		
+		listaQuemFaltaCadastrarFerias = confirmaPendentes(listaQuemFaltaCadastrarFerias, meses);
+		/* fazer exceção para o caso de todos serem null */
+		
+		return listaQuemFaltaCadastrarFerias;
+
+	}
+	
+	public List<Funcionario> confirmaPendentes(List<Funcionario> listaQuemFaltaCadastrarFerias, Integer meses) {
+		
+		//final int MESES_LIMITE = 20;  // defini que 20 meses é o alerta.
+		
+		List<Funcionario> listaConfirmada = new ArrayList<>();
+		
+		Calendar calContratado = Calendar.getInstance();
+		Calendar calAgora = Calendar.getInstance();
+		
+		Long conversaoMeses = 1000 * 60 * 60 * 24 * 30L;
+		
+		for(Funcionario func : listaQuemFaltaCadastrarFerias) {
+			calContratado.setTime(func.getDataContratacao());
+			if( (24 - (calAgora.getTimeInMillis() - calContratado.getTimeInMillis()) / conversaoMeses ) == meses ) {  // >= meses; na lógica anterior
+				listaConfirmada.add(func);
+			}
+		}
+		
+		return listaConfirmada;
+	}
+	
 	public Funcionario fromDTO(FuncionarioNewDTO objDto) {
 		
 		Equipe eq = new Equipe();
@@ -144,7 +188,7 @@ public class FuncionarioService {
 		
 		Endereco end = new Endereco(null, objDto.getRua(), objDto.getNumero(), objDto.getComplemento(), objDto.getBairro(), objDto.getCidade(), objDto.getEstado());
 		
-		Funcionario func = new Funcionario(null, objDto.getNome(), objDto.getDataNascimento(), objDto.getDataContratacao(), end, eq, objDto.getEmail(), pe.encode(objDto.getSenha()));	
+		Funcionario func = new Funcionario(null, objDto.getNome(), objDto.getDataNascimento(), objDto.getDataContratacao(), end, eq, objDto.getEmail(), pe.encode(objDto.getSenha()));
 		
 		end.setFuncionario(func);
 		
@@ -159,7 +203,7 @@ public class FuncionarioService {
 		return func; 
 	}
 	
-	public URI uploadProfilePicture(MultipartFile multipartFile) {		
+	public URI uploadProfilePicture(MultipartFile multipartFile) {
 				
 		UserSS user = UserService.authenticated();
 		if (user == null) {
@@ -187,13 +231,12 @@ public class FuncionarioService {
 		// montando o nomne personalizado. esse prefix é o que colocamos la no
 		// application properties: "func"
 		// a partir de agora ficará salvo na nuvem desta forma e gerará a url com esse
-		// nome no final		
+		// nome no final
 		
 		func.setImageUrl(s3Service.uploadFile(imageService.getInputStream(jpgImage, "jpg"), fileName, "image").toString());
 		update(func); // salvando no bd a url além de salvar na nuvem abaixo.
 		
-		return s3Service.uploadFile(imageService.getInputStream(jpgImage, "jpg"), fileName, "image");		
-		
+		return s3Service.uploadFile(imageService.getInputStream(jpgImage, "jpg"), fileName, "image");
 	}
 	
 }

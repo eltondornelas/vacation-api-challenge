@@ -16,8 +16,4 @@ public interface FuncionarioRepository extends JpaRepository<Funcionario, Intege
 	Funcionario findByEmail(String email);
 	// dessa forma o Spring entende que quer buscar por e-mail.	
 	
-	/*
-	 * poderia utilizado um id normal e criado uma função que buscava pela matrícula,
-	 * mas já havia avançado muito para mudar 
-	*/
 }

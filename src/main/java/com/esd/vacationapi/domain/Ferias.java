@@ -1,6 +1,7 @@
 package com.esd.vacationapi.domain;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -22,7 +23,7 @@ public class Ferias implements Serializable {
 	private Integer id;
 	
 	@OneToOne
-	@JoinColumn(name = "funcionario_id")	
+	@JoinColumn(name = "funcionario_id")
 	private Funcionario funcionario;
 
 	@JsonFormat(pattern = "dd/MM/yyyy")  // mascara padrão
@@ -98,6 +99,37 @@ public class Ferias implements Serializable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy");
+		
+		StringBuilder builder = new StringBuilder();
+		builder.append("nome : ");
+		builder.append(funcionario.getNome());
+		builder.append("matricula : ");
+		builder.append(funcionario.getMatricula());
+		builder.append("email : ");
+		builder.append(funcionario.getEmail());
+		builder.append("inicioFerias : ");
+		builder.append(sdf.format(inicioFerias));
+		builder.append("finalFerias : ");
+		builder.append(sdf.format(finalFerias));
+		builder.append("equipe : ");
+		builder.append(funcionario.getEquipe().getNome());
+		
+		return builder.toString();
+
+		
+		/*
+		return "nome : " + funcionario.getNome()
+				+ "\nmatricula : " + funcionario.getMatricula()
+				+ "\nemail : " + funcionario.getEmail()
+				+ "\ninicioFerias : " + sdf.format(inicioFerias)
+				+ "\nfinalFerias : " + sdf.format(finalFerias)
+				+ "\nequipe : " + funcionario.getEquipe().getNome();
+				*/
 	}
 	
 	

@@ -1,5 +1,6 @@
 package com.esd.vacationapi.dto;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -13,7 +14,7 @@ public class FeriasNewDTO {
 	private Date inicioFerias;
 	
 	@JsonFormat(pattern = "dd/MM/yyyy")
-	private Date finalFerias;
+	private Date finalFerias;	
 	
 	public FeriasNewDTO() {
 		
@@ -41,6 +42,15 @@ public class FeriasNewDTO {
 
 	public void setFinalFerias(Date finalFerias) {
 		this.finalFerias = finalFerias;
+	}
+
+	@Override
+	public String toString() {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy");
+		
+		return "matricula : " + matricula
+				+ "\ninicioFerias : " + sdf.format(inicioFerias)
+				+ "\nfinalFerias : " + sdf.format(finalFerias);
 	}
 	
 	

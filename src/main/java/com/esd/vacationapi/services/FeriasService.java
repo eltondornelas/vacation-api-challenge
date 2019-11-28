@@ -51,8 +51,10 @@ public class FeriasService {
 	
 	public void delete(Integer id) {
 		
-		find(id);
+		find(id);  // caso não exista já dispara a exceção
+		
 		try {
+			
 			feriasRepository.deleteById(id);
 		
 		}catch(DataIntegrityViolationException e) {
@@ -64,7 +66,7 @@ public class FeriasService {
 	public List<Ferias> findAll() {
 		return feriasRepository.findAll();
 
-	}
+	}	
 	
 	public Ferias fromDTO(FeriasNewDTO objDto) {
 		
@@ -87,17 +89,17 @@ public class FeriasService {
 		
 		Long finalFerias = fimPeriodoFerias.getTimeInMillis();
 		Long inicioFerias = inicioPeriodoFerias.getTimeInMillis();		
-		Integer conversao = 24*60*60*1000;
+		Long conversaoDias = 24*60*60*1000L;
 		
 		Equipe equipe = obj.getFuncionario().getEquipe();		
 		
 		
 		
-		if( (finalFerias - inicioFerias) / conversao < 15 || (finalFerias - inicioFerias) / conversao > 31) {  // as vezes essa conversão come 1 dia
+		if( (finalFerias - inicioFerias) / conversaoDias < 15 || (finalFerias - inicioFerias) / conversaoDias > 31) {  // as vezes essa conversão come 1 dia
 			throw new VacationException("Quantidade de tempo inválida");
 		}		
 		
-		else if( (inicioFerias - dataContratacao.getTimeInMillis()) / conversao < 365 ) {
+		else if( (inicioFerias - dataContratacao.getTimeInMillis()) / conversaoDias < 365 ) {
 			throw new VacationException("Não pode solicitar férias com menos de 1 ano de contratado");
 		}
 		
@@ -137,7 +139,9 @@ public class FeriasService {
 		}
 			
 		
-		return true;
+		return false;
 	}
+	
+	
 	
 }

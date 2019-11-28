@@ -1,8 +1,10 @@
 package com.esd.vacationapi.resources;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.esd.vacationapi.domain.Ferias;
 import com.esd.vacationapi.dto.FeriasNewDTO;
+import com.esd.vacationapi.services.EmailService;
 import com.esd.vacationapi.services.FeriasService;
+import com.esd.vacationapi.services.QRCodeService;
+import com.google.zxing.WriterException;
 
 @RestController
 @RequestMapping(value="/ferias")
@@ -25,6 +30,12 @@ public class FeriasResource {
 	
 	@Autowired
 	private FeriasService feriasService;
+	
+	@Autowired
+	private QRCodeService qrService;
+	
+	@Autowired
+	private EmailService emailService;
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Ferias> find(@PathVariable Integer id) {
@@ -36,7 +47,7 @@ public class FeriasResource {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> insert(@Valid @RequestBody FeriasNewDTO objDto) {		
+	public ResponseEntity<Void> insert(@Valid @RequestBody FeriasNewDTO objDto, HttpServletResponse response) {		
 		/*
 		 * inserindo pelo postman:
 		 * 
@@ -50,11 +61,25 @@ public class FeriasResource {
 		feriasService.aprovaSolicitacaoFerias(obj);
 		// se não for aprovado, vai ser lançado exceção lá do service.
 		
-		obj = feriasService.insert(obj);
+		obj = feriasService.insert(obj);		
 		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(obj.getId()).toUri();
 		
+		try {			
+			
+			qrService.generateQRCodeImage(obj.toString(), 350, 350, QRCodeService.QR_CODE_IMAGE_PATH);  // testando armazenamento e funcionamento do QR Code
+						
+			byte[] qrCode = qrService.getQRCodeImage(obj.toString(), 350, 350);  // recebendo o QR Code em bytes para impressão na response
+			
+			response.addHeader("Operation Response", "Registro Concluído com Sucesso!");
+			response.addHeader("QRCode", qrCode.toString());
+			
+			emailService.sendConfirmationEmail(obj);  // iria colocar no service, mas deixei em resource para aproveitar o QR Code
+			
+		} catch (WriterException | IOException e) {
+			 System.out.println("Could not generate QR Code, WriterException :: " + e.getMessage());
+		}		
 		
 		return ResponseEntity.created(uri).build();		
 	}
@@ -78,7 +103,8 @@ public class FeriasResource {
 		
 		return ResponseEntity.noContent().build();
 	}
-	
+		
+		
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<Ferias>> findAll() {

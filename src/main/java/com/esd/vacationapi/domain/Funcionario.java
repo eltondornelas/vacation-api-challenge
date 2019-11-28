@@ -62,7 +62,7 @@ public class Funcionario implements Serializable {
 	private Equipe equipe;
 	
 	@JsonIgnore
-	@OneToOne(cascade = CascadeType.ALL, mappedBy = "funcionario")
+	@OneToOne(mappedBy = "funcionario")  // removi o cascade, se não ele não exclui do banco de dados
 	private Ferias ferias;
 	
 	@ElementCollection(fetch=FetchType.EAGER)

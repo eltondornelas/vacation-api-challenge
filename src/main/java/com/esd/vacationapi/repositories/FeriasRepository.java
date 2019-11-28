@@ -8,5 +8,5 @@ import com.esd.vacationapi.domain.Ferias;
 @Repository
 public interface FeriasRepository extends JpaRepository<Ferias, Integer> {
 	
-	
+
 }
